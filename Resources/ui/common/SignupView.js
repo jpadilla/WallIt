@@ -5,24 +5,27 @@ function SignupView() {
 	
 	var usernameTextField = Ti.UI.createTextField({
 		hintText: 'Username',
-		width: 100,
-		top: 50
+		width: 150,
+		top: 50,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
 	self.add(usernameTextField);
 	
 	var passwordTextField = Ti.UI.createTextField({
 		hintText: 'Password',
-		width: 100,
+		width: 150,
 		top: 100,
-		passwordMask: true
+		passwordMask: true,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
 	self.add(passwordTextField);
 	
 	var confirmationTextField = Ti.UI.createTextField({
 		hintText: 'Password Confirmation',
-		width: 100,
+		width: 150,
 		top: 150,
-		passwordMask: true
+		passwordMask: true,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
 	self.add(confirmationTextField);
 	
