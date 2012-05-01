@@ -4,7 +4,7 @@ function MasterView() {
 	var self = Ti.UI.createView({
 		backgroundColor:'white'
 	});
-	
+
 	//some dummy data for our table view
 	var tableData = [
 		{title:'Apples', price:'1.25', hasChild:true, color: '#000'},

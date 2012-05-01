@@ -17,6 +17,103 @@ if (Ti.version < 1.8 ) {
 
 // This is a single context application with mutliple windows in a stack
 (function() {
+	var Cloud = require('ti.cloud');
+	
+	Cloud.Users.showMe(function (e) {
+	    if (e.success) {
+			startApplicationWindow();
+	    } else {
+			var AuthWindow = Ti.UI.createWindow({
+				backgroundColor:'#ffffff'
+			});
+			
+			var AuthView = require('ui/common/AuthView');
+			var authView = new AuthView();
+			
+			authView.addEventListener('login', function(e) {
+				var LoginWindow = Ti.UI.createWindow({
+					backgroundColor: '#FFFFFF'
+				});
+				
+				var closeButton = Ti.UI.createButton({
+					title: 'Close'
+				});
+				
+				closeButton.addEventListener('click', function(e) {
+					LoginWindow.close();
+				});
+				LoginWindow.leftNavButton = closeButton;
+				
+				var doneButton = Ti.UI.createButton({
+					title: 'Done'
+				});
+				LoginWindow.rightNavButton = doneButton;
+				
+				var LoginView = require('ui/common/LoginView');
+				var loginView = new LoginView();
+				LoginWindow.add(loginView);
+				
+				
+				doneButton.addEventListener('click', function(e) {
+					loginView.fireEvent('login');
+				});
+				
+				loginView.addEventListener('success', function(e) {
+		    		LoginWindow.close();
+		    		startApplicationWindow();
+				});
+				
+				LoginWindow.open({
+					modal: true
+				});
+			});
+			
+			authView.addEventListener('signup', function(e) {
+				var SignupWindow = Ti.UI.createWindow({
+					backgroundColor: '#FFFFFF'
+				});
+				
+				var closeButton = Ti.UI.createButton({
+					title: 'Close'
+				});
+				
+				closeButton.addEventListener('click', function(e) {
+					SignupWindow.close();
+				});
+				SignupWindow.leftNavButton = closeButton;
+				
+				var doneButton = Ti.UI.createButton({
+					title: 'Done'
+				});
+				SignupWindow.rightNavButton = doneButton;
+				
+				var SignupView = require('ui/common/SignupView');
+				var signupView = new SignupView();
+				SignupWindow.add(signupView);
+
+				doneButton.addEventListener('click', function(e) {
+					signupView.fireEvent('signup');
+				});
+				
+				signupView.addEventListener('success', function(e) {
+		    		SignupWindow.close();
+		    		startApplicationWindow();
+				});
+				
+				SignupWindow.open({
+					modal: true
+				});
+			});
+			
+			AuthWindow.add(authView);
+			
+			AuthWindow.open();
+		
+	    }
+	});
+})();
+
+function startApplicationWindow() {
 	//determine platform and form factor and render approproate components
 	var osname = Ti.Platform.osname,
 		version = Ti.Platform.version,
@@ -45,4 +142,4 @@ if (Ti.version < 1.8 ) {
 		}
 	}
 	new Window().open();
-})();
+}

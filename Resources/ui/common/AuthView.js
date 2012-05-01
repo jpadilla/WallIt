@@ -21,6 +21,10 @@ function AuthView() {
 	});
 	self.add(signupButton);
 
+	signupButton.addEventListener('click', function(e) {
+		self.fireEvent('signup');
+	});
+	
 	return self;
 };
 
