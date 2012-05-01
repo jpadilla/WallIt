@@ -1,3 +1,4 @@
+tiapp.xml
 tmp
 build/android/*
 !build/android/.gitignore
