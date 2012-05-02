@@ -14,6 +14,8 @@ function ApplicationWindow() {
 		detailView = new DetailView(),
 		postView = new PostView();
 		
+	var latitude, longitude;
+		
 	//create master view container
 	var masterContainerWindow = Ti.UI.createWindow({
 		title:'WallIt'
@@ -46,8 +48,11 @@ function ApplicationWindow() {
 		PostWindow.leftNavButton = closeButton;
 
 		createButton.addEventListener('click', function(e) {
+			postView.fireEvent('create_post', {longitude: longitude, latitude: latitude});
 		});
+		
 		PostWindow.rightNavButton = createButton;
+		
 		PostWindow.addEventListener('open', function(e) {
 			postView.fireEvent('focus_textarea');
 		});
@@ -77,6 +82,11 @@ function ApplicationWindow() {
 	masterView.addEventListener('itemSelected', function(e) {
 		detailView.fireEvent('itemSelected',e);
 		navGroup.open(detailContainerWindow);
+	});
+	
+	masterView.addEventListener('setLocation', function(e) {
+		longitude = e.longitude;
+		latitude = e.latitude;
 	});
 	
 	return self;

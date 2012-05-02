@@ -1,5 +1,7 @@
 function PostView() {
 
+	var Cloud = require('ti.cloud');
+	
 	var self = Ti.UI.createView({
 		backgroundColor : 'white'
 	});
@@ -51,6 +53,29 @@ function PostView() {
 	});
 
 	self.add(counterLabel);
+
+
+	self.addEventListener('create_post', function(e) {
+		Cloud.Posts.create({
+		    content: postTextArea.value,
+		    custom_fields: {
+		    	coordinates: [e.longitude, e.latitude]
+		    }
+		}, function (e) {
+		    if (e.success) {
+		        var post = e.posts[0];
+		        alert('Success:\\n' +
+		            'id: ' + post.id + '\\n' +
+		            'title: ' + post.title + '\\n' +
+		            'content: ' + post.content + '\\n' +
+		            'content: ' + post.custom_fields.coordinates + '\\n' +
+		            'updated_at: ' + post.updated_at);
+		    } else {
+		        alert('Error:\\n' +
+		            ((e.error && e.message) || JSON.stringify(e)));
+		    }
+		});
+	});
 
 	return self;
 };
