@@ -4,8 +4,14 @@ function MasterView() {
 	var self = Ti.UI.createView({
 		backgroundColor:'white'
 	});
-
-	var mapview = Titanium.Map.createView({
+	
+	Titanium.Geolocation.purpose = "Recieve User Location";
+	Titanium.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
+	 
+	// Set Distance filter. This dictates how often an event fires based on the distance the device moves. This value is in meters.
+	Titanium.Geolocation.distanceFilter = 10;
+	//set the mapview with the current location
+	var mapView = Titanium.Map.createView({
 	    mapType: Titanium.Map.STANDARD_TYPE,
 	    region: {latitude:33.74511, longitude:-84.38993, 
 	            latitudeDelta:0.01, longitudeDelta:0.01},
@@ -16,7 +22,28 @@ function MasterView() {
 	    top: 0
 	});
 	
-	self.add(mapview);
+	self.add(mapView);
+	 
+	function getLocation() {
+		//Get the current position and set it to the mapview
+		Titanium.Geolocation.getCurrentPosition(function(e){
+	        var region = {
+	            latitude: e.coords.latitude,
+	            longitude: e.coords.longitude,
+	            animate:true,
+	            latitudeDelta:0.003,
+	            longitudeDelta:0.003
+	        };
+	        
+	        mapView.setLocation(region);
+		});
+	}
+	
+	Titanium.Geolocation.addEventListener('location',function(){
+	    getLocation();
+	});
+	
+	getLocation();
 
 	//some dummy data for our table view
 	var tableData = [

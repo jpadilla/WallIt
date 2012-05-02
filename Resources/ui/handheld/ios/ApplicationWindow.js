@@ -1,7 +1,8 @@
 function ApplicationWindow() {
 	//declare module dependencies
 	var MasterView = require('ui/common/MasterView'),
-		DetailView = require('ui/common/DetailView');
+		DetailView = require('ui/common/DetailView'),
+		PostView = require('ui/common/PostView');
 		
 	//create object instance
 	var self = Ti.UI.createWindow({
@@ -10,13 +11,55 @@ function ApplicationWindow() {
 		
 	//construct UI
 	var masterView = new MasterView(),
-		detailView = new DetailView();
+		detailView = new DetailView(),
+		postView = new PostView();
 		
 	//create master view container
 	var masterContainerWindow = Ti.UI.createWindow({
-		title:'Products'
+		title:'WallIt'
 	});
 	masterContainerWindow.add(masterView);
+	
+	var postButton = Ti.UI.createButton({
+		title: 'Post'
+	});
+	
+	var PostWindow = Ti.UI.createWindow({
+		title: 'Create a Post'
+	});
+	
+	var closeButton = Ti.UI.createButton({
+		title: 'Close'
+	});
+	
+	var createButton = Ti.UI.createButton({
+		title: 'Post',
+		enabled: false
+	});
+	
+	postButton.addEventListener('click', function(e) {
+		PostWindow.add(postView);
+		
+		closeButton.addEventListener('click', function(e) {
+			PostWindow.close();
+		});
+		PostWindow.leftNavButton = closeButton;
+
+		createButton.addEventListener('click', function(e) {
+		});
+		PostWindow.rightNavButton = createButton;
+		PostWindow.addEventListener('open', function(e) {
+			postView.fireEvent('focus_textarea');
+		});
+		
+		postView.addEventListener('postButton_enabled', function(e) {
+			createButton.enabled = e.bool;
+		});
+		
+		PostWindow.open({modal: true});
+	});
+	
+	masterContainerWindow.rightNavButton = postButton;
 	
 	//create detail view container
 	var detailContainerWindow = Ti.UI.createWindow({
