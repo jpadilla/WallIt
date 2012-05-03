@@ -11,8 +11,7 @@ function ApplicationWindow() {
 		
 	//construct UI
 	var masterView = new MasterView(),
-		detailView = new DetailView(),
-		postView = new PostView();
+		detailView = new DetailView();
 		
 	var latitude, longitude;
 		
@@ -26,20 +25,23 @@ function ApplicationWindow() {
 		title: 'Post'
 	});
 	
-	var PostWindow = Ti.UI.createWindow({
-		title: 'Create a Post'
-	});
-	
-	var closeButton = Ti.UI.createButton({
-		title: 'Close'
-	});
-	
-	var createButton = Ti.UI.createButton({
-		title: 'Post',
-		enabled: false
-	});
-	
 	postButton.addEventListener('click', function(e) {
+		
+		var postView = new PostView();
+
+		var PostWindow = Ti.UI.createWindow({
+			title: 'Create a Post'
+		});
+		
+		var closeButton = Ti.UI.createButton({
+			title: 'Close'
+		});
+		
+		var createButton = Ti.UI.createButton({
+			title: 'Post',
+			enabled: false
+		});
+		
 		PostWindow.add(postView);
 		
 		closeButton.addEventListener('click', function(e) {
@@ -59,6 +61,16 @@ function ApplicationWindow() {
 		
 		postView.addEventListener('postButton_enabled', function(e) {
 			createButton.enabled = e.bool;
+		});
+		
+		postView.addEventListener('showCreatedPost', function(e) {
+			PostWindow.close();
+			masterView.fireEvent('showCreatedPost', e);
+		});
+		
+		PostWindow.addEventListener('close', function(e) {
+			PostWindow.remove(postView);
+			postView = null;
 		});
 		
 		PostWindow.open({modal: true});

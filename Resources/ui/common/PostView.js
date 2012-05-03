@@ -55,21 +55,18 @@ function PostView() {
 	self.add(counterLabel);
 
 
-	self.addEventListener('create_post', function(e) {
+	self.addEventListener('create_post', function(obj) {
 		Cloud.Posts.create({
 		    content: postTextArea.value,
 		    custom_fields: {
-		    	coordinates: [e.longitude, e.latitude]
+		    	coordinates: [obj.longitude, obj.latitude]
 		    }
 		}, function (e) {
 		    if (e.success) {
 		        var post = e.posts[0];
-		        alert('Success:\\n' +
-		            'id: ' + post.id + '\\n' +
-		            'title: ' + post.title + '\\n' +
-		            'content: ' + post.content + '\\n' +
-		            'content: ' + post.custom_fields.coordinates + '\\n' +
-		            'updated_at: ' + post.updated_at);
+		        postTextArea.value = '';
+		        counterLabel.text = '0/140';
+		        self.fireEvent('showCreatedPost', {post: post});
 		    } else {
 		        alert('Error:\\n' +
 		            ((e.error && e.message) || JSON.stringify(e)));
