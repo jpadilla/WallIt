@@ -80,7 +80,7 @@ function ApplicationWindow() {
 	
 	//create detail view container
 	var detailContainerWindow = Ti.UI.createWindow({
-		title:'Product Details'
+		title:'Post Details'
 	});
 	detailContainerWindow.add(detailView);
 	

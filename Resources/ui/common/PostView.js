@@ -39,7 +39,7 @@ function PostView() {
 		// Set character limit
 		counterLabel.text = e.value.length + '/140';
 
-		if(e.value.length == 0 || e.value.length >= 140) {
+		if(e.value.length == 0 || e.value.length > 140) {
 			self.fireEvent('postButton_enabled', {bool: false});
 		} else {
 			self.fireEvent('postButton_enabled', {bool: true});

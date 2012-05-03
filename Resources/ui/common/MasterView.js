@@ -101,8 +101,8 @@ function MasterView() {
 	//add behavior
 	tableView.addEventListener('click', function(e) {
 		self.fireEvent('itemSelected', {
-			name : e.rowData.title,
-			price : e.rowData.price
+			content : e.rowData.title,
+			post : e.rowData.post
 		});
 	});
 
@@ -121,8 +121,10 @@ function MasterView() {
 				var annotations = [];
 				for(var i = 0; i < e.posts.length; i++) {
 					var post = e.posts[i];
+					Ti.API.log(post);
 					data.push({
-						title : post.content
+						title : post.content,
+						post: post
 					});
 					var annotationView = Titanium.Map.createAnnotation({
 						latitude : post.custom_fields.coordinates[0][1],
